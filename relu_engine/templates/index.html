@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+	<title>IOT平台--index</title>
+	<!-- Meta tag Keywords -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="keywords" content="" />
+	<script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js')}}"></script>
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<!-- //Meta tag Keywords -->
+
+	<!-- Custom-Files -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='drword/css/bootstrap.css') }}">
+	<!-- Bootstrap-Core-CSS -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='drword/css/style.css') }}" type="text/css" media="all">
+	<!-- Style-CSS -->
+	<link href="{{ url_for('static', filename='drword/css/font-awesome.min.css') }}" rel="stylesheet">
+	<!-- Font-Awesome-Icons-CSS -->
+	<!-- //Custom-Files -->
+</head>
+
+<body>
+	<!-- main banner -->
+	<div class="main-top" id="home">
+		<!-- header -->
+		<header>
+			<div class="container-fluid">
+				<div class="header d-lg-flex justify-content-between align-items-center py-3 px-sm-3">
+					<!-- logo -->
+					<div id="logo">
+						<h1><a href="/index"><span class="fa fa-linode mr-2"></span>IOT平台</a></h1>
+					</div>
+					<!-- //logo -->
+					<div class="d-flex mt-lg-1 mt-sm-2 mt-3 justify-content-center">
+						
+						<!-- search 
+						<div class="search-w3layouts mr-3">
+							<form action="#" method="post" class="search-bottom-wthree d-flex">
+								<input class="search" type="search" placeholder="Search Here..." required="">
+								<button class="form-control btn" type="submit"><span class="fa fa-search"></span></button>
+							</form>
+						</div>
+						//search -->
+
+						<!-- userinfo -->
+						<div class="nav_w3ls">
+						<nav>
+							<label for="drop" class="toggle">userinfo</label>
+							<input type="checkbox" id="drop" />
+							<ul class="menu">	
+								<li>
+									<!-- First Tier Drop Down {{ url_for('static', filename='userpic/initheadpic.jpg')}}-->
+									<a href="#">
+										<img id="userhead_pic" src="" width="44" height="44">
+										<span class="fa fa-angle-down" aria-hidden="true"></span>
+									</a>
+									<input type="checkbox" id="drop-2"/>
+									<ul>
+										<li><a href="/userinfo" class="drop-text">个人信息</a></li>
+										<li><a href="/changepassword" class="drop-text">修改密码</a></li>
+										<li><a href="/logout" class="drop-text">退出登录</a></li>
+										<li><a href="/closeaccount" class="drop-text">注销账户</a></li>
+										<li><a href="/goto_air_conditioning" class="drop-text">温度控制</a></li>
+										<li><a href="/goto_hygrometer" class="drop-text">湿度控制</a></li>
+										<li><a href="/set_threshold" class="drop-text">阈值设置</a></li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+						</div>
+						<!-- //userinfo -->
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- //header -->
+
+		<!-- introduction -->
+		<div class="banner_w3lspvt position-relative">
+			<div class="container">
+				<div class="d-md-flex">
+					<div class="w3ls_banner_txt">
+						<h3 class="w3ls_pvt-title">IOT平台-规则引擎 <br><span>Introduction</span></h3>
+						<p class="text-sty-banner">
+							宿舍是我们高校学生学习生活的重要场所，是我们大学四年、研究生两年的“又一个家”。
+							如何将普普通通的宿舍改造成舒适、便利的宜居场所，几乎是每一个学生都曾考虑过的难题。
+							我们希望通过物联技术，将宿舍中的各种电器赋予智能与生命，在朝夕间通过智能家居平台
+							的管理来实现智能化的家居控制，从而给我们一个完美的、舒适的生活体验。
+						</p>
+					</div>
+					<div class="banner-img">
+						<img src="{{ url_for('static', filename='images/banner.png')}}" alt="" class="img-fluid">
+					</div>
+				</div>
+			</div>
+			<!-- animations effects -->
+			<div class="icon-effects-w3l">
+				<img src="{{ url_for('static', filename='images/shape1.png')}}" alt="" class="img-fluid shape-wthree shape-w3-one">
+				<img src="{{ url_for('static', filename='images/shape2.png')}}" alt="" class="img-fluid shape-wthree shape-w3-two">
+				<img src="{{ url_for('static', filename='images/shape3.png')}}" alt="" class="img-fluid shape-wthree shape-w3-three">
+				<img src="{{ url_for('static', filename='images/shape4.png')}}" alt="" class="img-fluid shape-wthree shape-w3-four">
+				<img src="{{ url_for('static', filename='images/shape5.png')}}" alt="" class="img-fluid shape-wthree shape-w3-five">
+				<img src="{{ url_for('static', filename='images/shape6.png')}}" alt="" class="img-fluid shape-wthree shape-w3-six">
+			</div>
+			<!-- //animations effects -->
+		</div>
+		<!-- //introduction -->
+	</div>
+	<!-- //main banner -->
+
+	<!-- what we can provide -->
+	<div class="what bg-li py-5" id="what">
+		<div class="container py-xl-5 py-lg-3">
+			<div class="row about-bottom-w3l text-center mt-4">
+				
+				<div class="col-lg-4 about-grid">
+					<div class="about-grid-main">
+						<img src="{{ url_for('static', filename='drword/images/img1.png')}}" alt="" class="img-fluid">
+						<h4 class="my-4">宿舍温度控制模块</h4>
+						<p>
+							该模块可用于查看当前宿舍室温以及空调设定温度。
+						</p>
+						<a href="/airconditioning" class="button-w3ls btn mt-sm-5 mt-4">Go to Start</a>
+					</div>
+				</div>
+
+				<div class="col-lg-4 about-grid">
+					<div class="about-grid-main">
+						<img src="{{ url_for('static', filename='drword/images/img3.png')}}" alt="" class="img-fluid">
+						<h4 class="my-4">宿舍湿度控制模块</h4>
+						<p>
+							该模块可用于对宿舍内的湿度进行监控。
+						</p>
+						<a href="/hygrometer" class="button-w3ls btn mt-sm-5 mt-4">Go to Start</a>
+					</div>
+				</div>
+
+				<div class="col-lg-4 about-grid">
+					<div class="about-grid-main">
+						<img src="{{ url_for('static', filename='drword/images/img2.png')}}" alt="" class="img-fluid">
+						<h4 class="my-4">阈值设置模块</h4>
+						<p>
+							对空调、加湿器等设备的激活阈值进行设置。
+						</p>
+						<a href="/set_threshold" class="button-w3ls btn mt-sm-5 mt-4">Go to Start</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- //what we can provide -->
+
+	<!-- copyright bottom -->
+	<div class="copy-bottom bg-li py-4 border-top">
+		<div class="container-fluid">
+			<div class="d-md-flex px-md-3 position-relative text-center">
+				<!-- copyright -->
+				<div class="copy_right mx-md-auto mb-md-0 mb-3">
+					<p class="text-bl let">Copyright &copy; 2021. IOT All rights reserved. More Information <a href="http://www.nju.edu.cn/" target="_blank" title="NJU">NJU</a> - Designed by <a href="#" title="WSW">WSW</a>
+					</p>
+				</div>
+				<!-- //copyright -->
+				<!-- move top icon -->
+				<a href="#home" class="move-top text-center">
+					<span class="fa fa-level-up" aria-hidden="true"></span>
+				</a>
+				<!-- //move top icon -->
+			</div>
+		</div>
+	</div>
+	<!-- //copyright bottom -->
+
+<script type="text/javascript">
+
+	// var url_address = "http://172.17.182.6:5000/"
+	var url_address = "http://172.20.10.3:5000/"
+	// var url_address = "http://172.19.145.95:5000/"
+
+
+	var basename = url_address + "static/userpic/";
+
+	//get the userhead
+	$(document).ready(function(e){
+		var userhead_pic = document.getElementById('userhead_pic');
+
+		$.ajax({
+			url:url_address + "get_user_head",
+			type:"POST",
+			success: function(data){
+				userhead_pic.src = basename + data['userhead_pic'];
+			}
+		});
+
+	});
+</script>
+
+</body>
+
+</html>

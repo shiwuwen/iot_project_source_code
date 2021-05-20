@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>阈值设置模块</title>
+	<!-- Meta tag Keywords -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="keywords" content="" />
+	<script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js')}}"></script>
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<!-- //Meta tag Keywords -->
+
+	<!-- Custom-Files -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='drword/css/bootstrap.css') }}">
+	<!-- Bootstrap-Core-CSS -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='drword/css/style.css') }}" type="text/css" media="all">
+	<!-- Style-CSS -->
+	<link href="{{ url_for('static', filename='drword/css/font-awesome.min.css') }}" rel="stylesheet">
+	<!-- Font-Awesome-Icons-CSS -->
+	<!-- //Custom-Files -->
+</head>
+
+<body>
+	<!-- main banner -->
+	<div class="main-top" id="home">
+		<!-- header -->
+		<header>
+			<div class="container-fluid">
+				<div class="header d-lg-flex justify-content-between align-items-center py-3 px-sm-3">
+					<!-- logo -->
+					<div id="logo">
+						<h1><a href="/index"><span class="fa fa-linode mr-2"></span>IOT平台</a></h1>
+					</div>
+					<!-- //logo -->
+					<div class="d-flex mt-lg-1 mt-sm-2 mt-3 justify-content-center">
+						
+						<!-- search 
+						<div class="search-w3layouts mr-3">
+							<form action="#" method="post" class="search-bottom-wthree d-flex">
+								<input class="search" type="search" placeholder="Search Here..." required="">
+								<button class="form-control btn" type="submit"><span class="fa fa-search"></span></button>
+							</form>
+						</div>
+						//search -->
+						
+						<!-- userinfo -->
+						<div class="nav_w3ls">
+						<nav>
+							<label for="drop" class="toggle">userinfo</label>
+							<input type="checkbox" id="drop" />
+							<ul class="menu">	
+								<li>
+									<!-- First Tier Drop Down -->
+									<a href="#">
+										<img id="userhead_pic" src="" width="43" height="43">
+										<span class="fa fa-angle-down" aria-hidden="true"></span>
+									</a>
+									<input type="checkbox" id="drop-2"/>
+									<ul>
+										<li><a href="/userinfo" class="drop-text">个人信息</a></li>
+										<li><a href="/changepassword" class="drop-text">修改密码</a></li>
+										<li><a href="/logout" class="drop-text">退出登录</a></li>
+										<li><a href="/closeaccount" class="drop-text">注销账户</a></li>
+										<li><a href="/goto_air_conditioning" class="drop-text">温度控制</a></li>
+										<li><a href="/goto_hygrometer" class="drop-text">湿度控制</a></li>
+										<li><a href="/set_threshold" class="drop-text">阈值设置</a></li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+						</div>
+						<!-- //userinfo -->
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- //header -->
+
+		<!-- banner -->
+		<div class="banner_w3lspvt-2">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/index" class="font-weight-bold">Home</a></li>
+				<li class="breadcrumb-item" aria-current="page">阈值设置模块</li>
+			</ol>
+		</div>
+		<!-- //banner -->
+	</div>
+	<!-- //main banner -->
+
+	<!-- contact -->
+	<div class="contact py-5" id="contact">
+		<div class="container pb-xl-5 pb-lg-3">
+			<div class="row">
+				<div class="col-lg-6 mt-lg-0 mt-5">
+					<!-- contact form grid -->
+					<div class="contact-top1">
+						<form action="#" method="post" class="contact-wthree-do">
+							<label>temperature:</label>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-6">
+										<label>
+											当前值
+										</label>
+										<input id="temperature_threshold_curr" class="form-control" type="text" placeholder="" name="name" disabled="true">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-6">
+										<label>
+											更新值
+										</label>
+										<input id="temperature_new" class="form-control" type="text" placeholder="2-5之间的整数" name="mobile" required="">
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class="d-flex subscribe-wthree-field">
+								<button id="temperature_submit" class="btn form-control btn-cont-w3 w-50" type="submit">修改</button>
+						</div>
+					</div>
+					<!-- //contact form grid ends here -->
+				</div>
+				<div class="col-lg-6 mt-lg-0 mt-5">
+					<!-- contact form grid -->
+					<div class="contact-top1">
+						<form action="#" method="post" class="contact-wthree-do">
+							<label>humidity:</label>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-6">
+										<label>
+											当前值
+										</label>
+										<input id="humidity_threshold_curr" class="form-control" type="text" placeholder="" name="name" disabled="true">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-6">
+										<label>
+											更新值
+										</label>
+										<input id="humidity_new" class="form-control" type="text" placeholder="60-70间的整数" name="mobile" required="">
+									</div>
+								</div>
+							</div>
+						</form>
+						<div class="d-flex subscribe-wthree-field">
+								<button id="humidity_submit" class="btn form-control btn-cont-w3 w-50" type="submit">修改</button>
+						</div>
+					</div>
+					<!-- //contact form grid ends here -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- //contact-->
+
+	<!-- copyright bottom -->
+	<div class="copy-bottom bg-li py-4 border-top">
+		<div class="container-fluid">
+			<div class="d-md-flex px-md-3 position-relative text-center">
+				<!-- copyright -->
+				<div class="copy_right mx-md-auto mb-md-0 mb-3">
+					<p class="text-bl let">Copyright &copy; 2021. IOT All rights reserved. More Information <a href="http://www.nju.edu.cn/" target="_blank" title="NJU">NJU</a> - Designed by <a href="#" title="WSW">WSW</a>
+					</p>
+				</div>
+				<!-- //copyright -->
+				<!-- move top icon -->
+				<a href="#home" class="move-top text-center">
+					<span class="fa fa-level-up" aria-hidden="true"></span>
+				</a>
+				<!-- //move top icon -->
+			</div>
+		</div>
+	</div>
+	<!-- //copyright bottom -->
+
+<script type="text/javascript">
+
+	// var url_address = "http://172.17.182.6:5000/"
+	var url_address = "http://172.20.10.3:5000/"
+	// var url_address = "http://172.19.145.95:5000/"
+
+	var basename = url_address + "static/userpic/";
+
+	$(document).ready(function(e){
+		var userhead_pic = document.getElementById('userhead_pic');
+
+		$.ajax({
+			url: url_address + "get_user_head",
+			type:"POST",
+			success: function(data){
+				userhead_pic.src = basename + data['userhead_pic'];
+			}
+		});
+
+	});
+
+	//get the userhead
+	$(document).ready(function(e){
+		var temperature_threshold_curr = document.getElementById('temperature_threshold_curr');
+		var humidity_threshold_curr = document.getElementById('humidity_threshold_curr');
+
+		$.ajax({
+			url: url_address + "get_threshold",
+			type:"POST",
+			success: function(data){
+				temperature_threshold_curr.value = data['temperature_threshold_curr']
+				humidity_threshold_curr.value = data['humidity_threshold_curr']
+			}
+		});
+
+	});
+
+	$(document).ready(function(e){
+		$("#temperature_submit").click(function(){
+
+			var temperature_new = document.getElementById('temperature_new');
+
+			var registerjson = {"temperature_new":temperature_new.value};
+
+			if(temperature_new.value>5 || temperature_new.value<2){
+				temperature_new.value = ''
+				alert('请输入有效参数')
+			}
+			else{
+
+				$.ajax({
+					url: url_address + "set_temperature_threshold",
+					type:"POST",
+					data:JSON.stringify(registerjson),
+					datatype:"TEXT",
+					success: function(data) {
+						alert('OK')
+						get_new_temperature();
+					}
+				});
+			}
+		});
+	});
+
+	function get_new_temperature(){
+		var temperature_threshold_curr = document.getElementById('temperature_threshold_curr');
+		var temperature_new = document.getElementById('temperature_new');
+
+		$.ajax({
+			url: url_address + "get_threshold",
+			type:"POST",
+			success: function(data){
+				temperature_threshold_curr.value = data['temperature_threshold_curr']
+				temperature_new.value = ''
+			}
+		});
+	}
+
+	$(document).ready(function(e){
+		$("#humidity_submit").click(function(){
+
+			var humidity_new = document.getElementById('humidity_new');
+
+			var registerjson = {"humidity_new":humidity_new.value};
+
+			if(humidity_new.value>70 || humidity_new.value<60){
+				humidity_new.value = ''
+				alert('请输入有效参数')
+			}
+			else{
+
+				$.ajax({
+					url: url_address + "set_humidity_threshold",
+					type:"POST",
+					data:JSON.stringify(registerjson),
+					datatype:"TEXT",
+					success: function(data) {
+						alert('OK')
+						get_new_humidity();
+					}
+				});
+			}
+		});
+	});
+
+	function get_new_humidity(){
+		var humidity_threshold_curr = document.getElementById('humidity_threshold_curr');
+		var humidity_new = document.getElementById('humidity_new');
+
+		$.ajax({
+			url: url_address + "get_threshold",
+			type:"POST",
+			success: function(data){
+				humidity_threshold_curr.value = data['humidity_threshold_curr']
+				humidity_new.value = ''
+			}
+		});
+	}
+</script>
+
+
+
+</body>
+
+</html>

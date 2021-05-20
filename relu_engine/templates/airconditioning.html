@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>温度控制模块数据显示</title>
+    <!-- 引入 echarts.js -->
+    <script src="{{ url_for('static', filename='echarts.min.js') }}"></script>
+
+	<!-- Meta tag Keywords -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="UTF-8" />
+	<meta name="keywords" content="" />
+	<script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js')}}"></script>
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<!-- //Meta tag Keywords -->
+
+	<!-- Custom-Files -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='drword/css/bootstrap.css') }}">
+	<!-- Bootstrap-Core-CSS -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='drword/css/style.css') }}" type="text/css" media="all">
+	<!-- Style-CSS -->
+	<link href="{{ url_for('static', filename='drword/css/font-awesome.min.css') }}" rel="stylesheet">
+	<!-- Font-Awesome-Icons-CSS -->
+	<!-- //Custom-Files -->
+</head>
+
+<body>
+	<!-- main banner -->
+	<div class="main-top" id="home">
+		<!-- header -->
+		<header>
+			<div class="container-fluid">
+				<div class="header d-lg-flex justify-content-between align-items-center py-3 px-sm-3">
+					<!-- logo -->
+					<div id="logo">
+						<h1><a href="/index"><span class="fa fa-linode mr-2"></span>IOT平台</a></h1>
+					</div>
+					<!-- //logo -->
+					<div class="d-flex mt-lg-1 mt-sm-2 mt-3 justify-content-center">
+
+						<!-- search
+						<div class="search-w3layouts mr-3">
+							<form action="#" method="post" class="search-bottom-wthree d-flex">
+								<input class="search" type="search" placeholder="Search Here..." required="">
+								<button class="form-control btn" type="submit"><span class="fa fa-search"></span></button>
+							</form>
+						</div>
+						//search -->
+
+						<!-- userinfo -->
+						<div class="nav_w3ls">
+						<nav>
+							<label for="drop" class="toggle">userinfo</label>
+							<input type="checkbox" id="drop" />
+							<ul class="menu">
+								<li>
+									<!-- First Tier Drop Down -->
+									<a href="#">
+										<img id="userhead_pic" src="" width="43" height="43">
+										<span class="fa fa-angle-down" aria-hidden="true"></span>
+									</a>
+									<input type="checkbox" id="drop-2"/>
+									<ul>
+										<li><a href="/userinfo" class="drop-text">个人信息</a></li>
+										<li><a href="/changepassword" class="drop-text">修改密码</a></li>
+										<li><a href="/logout" class="drop-text">退出登录</a></li>
+										<li><a href="/closeaccount" class="drop-text">注销账户</a></li>
+										<li><a href="/goto_air_conditioning" class="drop-text">温度控制</a></li>
+										<li><a href="/goto_hygrometer" class="drop-text">湿度控制</a></li>
+										<li><a href="/set_threshold" class="drop-text">阈值设置</a></li>
+									</ul>
+								</li>
+							</ul>
+						</nav>
+						</div>
+						<!-- //userinfo -->
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- //header -->
+
+        <!-- banner -->
+		<div class="banner_w3lspvt-2">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/index" class="font-weight-bold">Home</a></li>
+				<li class="breadcrumb-item" aria-current="page">温度控制模块</li>
+			</ol>
+		</div>
+		<!-- //banner -->
+
+	</div>
+	<!-- //main banner -->
+
+    <!-- contact -->
+	<div class="contact py-5" id="contact">
+		<div class="container pb-xl-5 pb-lg-3">
+			<div class="row">
+                <div id="main" style="width:50%;height:400px;float:left;"></div>
+                <div id="main2" style="width: 50%;height:400px;float:left;"></div>
+			</div>
+		</div>
+	</div>
+	<!-- //contact-->
+
+	<!-- copyright bottom -->
+	<div class="copy-bottom bg-li py-4 border-top">
+		<div class="container-fluid">
+			<div class="d-md-flex px-md-3 position-relative text-center">
+				<!-- copyright -->
+				<div class="copy_right mx-md-auto mb-md-0 mb-3">
+					<p class="text-bl let">Copyright &copy; 2021. IOT All rights reserved. More Information <a href="http://www.nju.edu.cn/" target="_blank" title="NJU">NJU</a> - Designed by <a href="#" title="WSW">WSW</a>
+					</p>
+				</div>
+				<!-- //copyright -->
+				<!-- move top icon -->
+				<a href="#home" class="move-top text-center">
+					<span class="fa fa-level-up" aria-hidden="true"></span>
+				</a>
+				<!-- //move top icon -->
+			</div>
+		</div>
+	</div>
+	<!-- //copyright bottom -->
+
+
+    <script type="text/javascript">
+
+        // var url_address = "http://172.17.182.6:5000/"
+		var url_address = "http://172.20.10.3:5000/"
+		// var url_address = "http://172.19.145.95:5000/"
+
+
+        var basename = url_address + "static/userpic/";
+
+        //get the userhead
+        $(document).ready(function(e){
+            var userhead_pic = document.getElementById('userhead_pic');
+
+            $.ajax({
+                url: url_address + "get_user_head",
+                type:"POST",
+                success: function(data){
+                    userhead_pic.src = basename + data['userhead_pic'];
+                }
+            });
+
+        });
+
+        var sensor_temperature = 20
+        var air_conditioning_temperature = 20
+
+        var sleep = function(time) {
+            var startTime = new Date().getTime() + parseInt(time, 10);
+            while(new Date().getTime() < startTime) {}
+        };
+
+        var get_temperature = function(){
+            $.ajax({
+
+                url: url_address + "air_conditioning_run",
+                //处理页面的路径
+                //data:JSON.stringify('OK'),
+                //传递的数据.提交数一般以json格式来写,key是自定义的,:后面的值 就是上面的值
+                type:"GET",
+                //数据的提交传递方式,GET,POST 最好用POST
+                //datatype:"TEXT",
+                //返回值的类型,TEXT,JSON,XML三种类型可选
+                success:function(data){
+                //如果ajax执行成功,返回来调用success函数即回调函数,返回值以参数的形式返回
+                    // alert(data)
+
+                    sensor_temperature = data['sensor_temperature']
+                    air_conditioning_temperature = data['air_temperature']
+                },
+
+            });
+        };
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart1 = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option1 = {
+
+            series: [{
+                    type: 'gauge',
+                    center: ["50%", "60%"],
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: -20,
+                    max: 40,
+                    splitNumber: 12,
+                    itemStyle: {
+                        color: '#FFAB91'
+                    },
+                    progress: {
+                        show: true,
+                        width: 30
+                    },
+
+                    pointer: {
+                        show: false,
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            width: 30
+                        }
+                    },
+                    axisTick: {
+                        distance: -45,
+                        splitNumber: 5,
+                        lineStyle: {
+                            width: 2,
+                            color: '#999'
+                        }
+                    },
+                    splitLine: {
+                        distance: -52,
+                        length: 14,
+                        lineStyle: {
+                            width: 3,
+                            color: '#999'
+                        }
+                    },
+                    axisLabel: {
+                        distance: -20,
+                        color: '#999',
+                        fontSize: 20
+                    },
+                    anchor: {
+                        show: false
+                    },
+                    title: {
+                        show: false
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        width: '60%',
+                        lineHeight: 40,
+                        height: '15%',
+                        borderRadius: 8,
+                        offsetCenter: [0, '-15%'],
+                        fontSize: 60,
+                        fontWeight: 'bolder',
+                        formatter: '{value} °C',
+                        color: 'auto'
+                    },
+                    data: [{
+                        value: 20,
+                        name: 'sensor'
+                    }]
+                },
+
+                {
+                    type: 'gauge',
+                    center: ["50%", "60%"],
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: -20,
+                    max: 40,
+                    itemStyle: {
+                        color: '#FD7347',
+                    },
+                    progress: {
+                        show: true,
+                        width: 8
+                    },
+
+                    pointer: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false
+                    },
+                    detail: {
+                        show: false
+                    },
+                    data: [{
+                        value: 20,
+                        name: 'sensor temperature'
+                    }]
+
+                }
+            ],
+        };
+
+        // setInterval(function() {
+        //     let random = (Math.random() * 40).toFixed(2) - 10;
+        //     get_temperature()
+        //     option1.series[0].data[0].value = sensor_temperature.toFixed(2);
+        //     option1.series[1].data[0].value = sensor_temperature.toFixed(2);
+        //     myChart1.setOption(option1, true);
+        // }, 2000);
+        // // 使用刚指定的配置项和数据显示图表。
+        // myChart1.setOption(option1);
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('main2'));
+
+        // 指定图表的配置项和数据
+        var option2 = {
+
+            series: [{
+                    type: 'gauge',
+                    center: ["50%", "60%"],
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: -20,
+                    max: 40,
+                    splitNumber: 12,
+                    itemStyle: {
+                        color: '#FFAB91'
+                    },
+                    progress: {
+                        show: true,
+                        width: 30
+                    },
+
+                    pointer: {
+                        show: false,
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            width: 30
+                        }
+                    },
+                    axisTick: {
+                        distance: -45,
+                        splitNumber: 5,
+                        lineStyle: {
+                            width: 2,
+                            color: '#999'
+                        }
+                    },
+                    splitLine: {
+                        distance: -52,
+                        length: 14,
+                        lineStyle: {
+                            width: 3,
+                            color: '#999'
+                        }
+                    },
+                    axisLabel: {
+                        distance: -20,
+                        color: '#999',
+                        fontSize: 20
+                    },
+                    anchor: {
+                        show: false
+                    },
+                    title: {
+                        show: false
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        width: '60%',
+                        lineHeight: 40,
+                        height: '15%',
+                        borderRadius: 8,
+                        offsetCenter: [0, '-15%'],
+                        fontSize: 60,
+                        fontWeight: 'bolder',
+                        formatter: '{value} °C',
+                        color: 'auto'
+                    },
+                    data: [{
+                        value: 20,
+                        name: 'air conditioning'
+                    }]
+                },
+
+                {
+                    type: 'gauge',
+                    center: ["50%", "60%"],
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: -20,
+                    max: 40,
+                    itemStyle: {
+                        color: '#FD7347',
+                    },
+                    progress: {
+                        show: true,
+                        width: 8
+                    },
+
+                    pointer: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false
+                    },
+                    detail: {
+                        show: false
+                    },
+                    data: [{
+                        value: 20,
+                        name: 'air conditioning'
+                    }]
+
+                }
+            ],
+        };
+
+        setInterval(function() {
+            let random = (Math.random() * 40).toFixed(2) - 0;
+            get_temperature()
+            option2.series[0].data[0].value = air_conditioning_temperature.toFixed(2) ;
+            option2.series[1].data[0].value = air_conditioning_temperature.toFixed(2) ;
+            myChart2.setOption(option2, true);
+            option1.series[0].data[0].value = sensor_temperature.toFixed(2) ;
+            option1.series[1].data[0].value = sensor_temperature.toFixed(2) ;
+            myChart1.setOption(option1, true);
+        }, 2000);
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option2);
+        myChart1.setOption(option1);
+
+
+    </script>
+
+
+</body>
+
+</html>

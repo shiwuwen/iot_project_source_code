@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>空调模块数据显示</title>
+    <!-- 引入 echarts.js -->
+    <script src="./echarts.min.js"></script>
+    <script src="./jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    
+    <div id="sub" style="width: 1200px;height:400px;">
+    
+        <div id="main" style="width:600px;height:400px;float:left;"></div>
+    
+        <div id="main2" style="width: 600px;height:400px;float:left;"></div>
+    </div>
+
+    <script type="text/javascript">
+        var sensor_temperature = 20
+        var air_conditioning_temperature = 20
+
+        var sleep = function(time) {
+            var startTime = new Date().getTime() + parseInt(time, 10);
+            while(new Date().getTime() < startTime) {}
+        };
+
+        var url_address = "http://172.17.231.49:5000/"
+        var get_temperature = function(){
+            $.ajax({
+
+                url: url_address + "air_conditioning_run",
+                //处理页面的路径
+                //data:JSON.stringify('OK'),
+                //传递的数据.提交数一般以json格式来写,key是自定义的,:后面的值 就是上面的值
+                type:"GET",
+                //数据的提交传递方式,GET,POST 最好用POST
+                //datatype:"TEXT",
+                //返回值的类型,TEXT,JSON,XML三种类型可选
+                success:function(data){
+                //如果ajax执行成功,返回来调用success函数即回调函数,返回值以参数的形式返回
+                    // alert(data)
+
+                    sensor_temperature = data['sensor_temperature']
+                    air_conditioning_temperature = data['air_temperature']
+                },
+                
+            });  
+        };
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart1 = echarts.init(document.getElementById('main'));
+ 
+        // 指定图表的配置项和数据
+        var option1 = {
+            
+            series: [{
+                    type: 'gauge',
+                    center: ["50%", "60%"],
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: -20,
+                    max: 40,
+                    splitNumber: 12,
+                    itemStyle: {
+                        color: '#FFAB91'
+                    },
+                    progress: {
+                        show: true,
+                        width: 30
+                    },
+
+                    pointer: {
+                        show: false,
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            width: 30
+                        }
+                    },
+                    axisTick: {
+                        distance: -45,
+                        splitNumber: 5,
+                        lineStyle: {
+                            width: 2,
+                            color: '#999'
+                        }
+                    },
+                    splitLine: {
+                        distance: -52,
+                        length: 14,
+                        lineStyle: {
+                            width: 3,
+                            color: '#999'
+                        }
+                    },
+                    axisLabel: {
+                        distance: -20,
+                        color: '#999',
+                        fontSize: 20
+                    },
+                    anchor: {
+                        show: false
+                    },
+                    title: {
+                        show: false
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        width: '60%',
+                        lineHeight: 40,
+                        height: '15%',
+                        borderRadius: 8,
+                        offsetCenter: [0, '-15%'],
+                        fontSize: 60,
+                        fontWeight: 'bolder',
+                        formatter: '{value} °C',
+                        color: 'auto'
+                    },
+                    data: [{
+                        value: 20,
+                        name: 'sensor'
+                    }]
+                },
+
+                {
+                    type: 'gauge',
+                    center: ["50%", "60%"],
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: -20,
+                    max: 40,
+                    itemStyle: {
+                        color: '#FD7347',
+                    },
+                    progress: {
+                        show: true,
+                        width: 8
+                    },
+
+                    pointer: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false
+                    },
+                    detail: {
+                        show: false
+                    },
+                    data: [{
+                        value: 20,
+                        name: 'sensor temperature'
+                    }]
+
+                }
+            ],
+        };
+        
+        setInterval(function() {
+            let random = (Math.random() * 40).toFixed(2) - 10;
+            get_temperature()
+            option1.series[0].data[0].value = sensor_temperature.toFixed(2);
+            option1.series[1].data[0].value = sensor_temperature.toFixed(2);
+            myChart1.setOption(option1, true);
+        }, 2000);
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option1);
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart2 = echarts.init(document.getElementById('main2'));
+ 
+        // 指定图表的配置项和数据
+        var option2 = {
+            
+            series: [{
+                    type: 'gauge',
+                    center: ["50%", "60%"],
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: -20,
+                    max: 40,
+                    splitNumber: 12,
+                    itemStyle: {
+                        color: '#FFAB91'
+                    },
+                    progress: {
+                        show: true,
+                        width: 30
+                    },
+
+                    pointer: {
+                        show: false,
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            width: 30
+                        }
+                    },
+                    axisTick: {
+                        distance: -45,
+                        splitNumber: 5,
+                        lineStyle: {
+                            width: 2,
+                            color: '#999'
+                        }
+                    },
+                    splitLine: {
+                        distance: -52,
+                        length: 14,
+                        lineStyle: {
+                            width: 3,
+                            color: '#999'
+                        }
+                    },
+                    axisLabel: {
+                        distance: -20,
+                        color: '#999',
+                        fontSize: 20
+                    },
+                    anchor: {
+                        show: false
+                    },
+                    title: {
+                        show: false
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        width: '60%',
+                        lineHeight: 40,
+                        height: '15%',
+                        borderRadius: 8,
+                        offsetCenter: [0, '-15%'],
+                        fontSize: 60,
+                        fontWeight: 'bolder',
+                        formatter: '{value} °C',
+                        color: 'auto'
+                    },
+                    data: [{
+                        value: 20,
+                        name: 'air conditioning'
+                    }]
+                },
+
+                {
+                    type: 'gauge',
+                    center: ["50%", "60%"],
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: -20,
+                    max: 40,
+                    itemStyle: {
+                        color: '#FD7347',
+                    },
+                    progress: {
+                        show: true,
+                        width: 8
+                    },
+
+                    pointer: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false
+                    },
+                    detail: {
+                        show: false
+                    },
+                    data: [{
+                        value: 20,
+                        name: 'air conditioning'
+                    }]
+
+                }
+            ],
+        };
+        
+        setInterval(function() {
+            let random = (Math.random() * 40).toFixed(2) - 0;
+            get_temperature()
+            option2.series[0].data[0].value = air_conditioning_temperature.toFixed(2) ;
+            option2.series[1].data[0].value = air_conditioning_temperature.toFixed(2) ;
+            myChart2.setOption(option2, true);
+        }, 2000);
+        // 使用刚指定的配置项和数据显示图表。
+        myChart2.setOption(option2);
+    </script>
+</body>
+</html>

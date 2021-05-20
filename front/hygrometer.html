@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>加湿器模块数据显示</title>
+    <!-- 引入 echarts.js -->
+    <script src="./echarts.min.js"></script>
+    <script src="./jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    
+    <div id="main" style="width:1200px;height:600px;"></div>
+
+    <script type="text/javascript">
+        var sensor_humidity = 50
+        var hygrometer_humidity = 50
+
+        var sleep = function(time) {
+            var startTime = new Date().getTime() + parseInt(time, 10);
+            while(new Date().getTime() < startTime) {}
+        };
+
+        var url_address = "http://172.17.231.49:5000/"
+        var get_humidity = function(){
+            $.ajax({
+
+                url: url_address + "hygrometer_run",
+                //处理页面的路径
+                //data:JSON.stringify('OK'),
+                //传递的数据.提交数一般以json格式来写,key是自定义的,:后面的值 就是上面的值
+                type:"GET",
+                //数据的提交传递方式,GET,POST 最好用POST
+                //datatype:"TEXT",
+                //返回值的类型,TEXT,JSON,XML三种类型可选
+                success:function(data){
+                //如果ajax执行成功,返回来调用success函数即回调函数,返回值以参数的形式返回
+                    // alert(data)
+
+                    sensor_humidity = data['sensor_humidity']
+                    hygrometer_humidity = data['hygrometer_humidity']
+                },
+                
+            });  
+        };
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart1 = echarts.init(document.getElementById('main'));
+ 
+        // 指定图表的配置项和数据
+        var option1 = {
+            
+            series: [{
+        type: 'gauge',
+        startAngle: 90,
+        endAngle: -270,
+        pointer: {
+            show: false
+        },
+        progress: {
+            show: true,
+            overlap: false,
+            roundCap: true,
+            clip: false,
+            itemStyle: {
+                borderWidth: 1,
+                borderColor: '#464646'
+            }
+        },
+        axisLine: {
+
+            lineStyle: {
+                width: 40
+            }
+        },
+        splitLine: {
+            show: false,
+            distance: 0,
+            length: 10
+        },
+        axisTick: {
+            show: false
+        },
+        axisLabel: {
+            show: false,
+            distance: 50
+        },
+        data: [{
+            value: 50,
+            name: 'sensor',
+            title: {
+                offsetCenter: ['0%', '-15%']
+            },
+            detail: {
+                offsetCenter: ['0%', '-5%']
+            }
+        },
+        {
+            value: 50,
+            name: 'hygrometer',
+            title: {
+                offsetCenter: ['0%', '15%']
+            },
+            detail: {
+                offsetCenter: ['0%', '25%']
+            }
+        }
+        ],
+        title: {
+            fontSize: 14
+        },
+        detail: {
+            width: 50,
+            height: 14,
+            fontSize: 14,
+            color: 'auto',
+            borderColor: 'auto',
+            borderRadius: 20,
+            borderWidth: 1,
+            formatter: '{value}%'
+        }
+    }]
+        };
+        
+        setInterval(function() {
+            let random = (Math.random() * 40).toFixed(2) - 10;
+            get_humidity()
+            option1.series[0].data[0].value = sensor_humidity.toFixed(2);
+            option1.series[0].data[1].value = hygrometer_humidity.toFixed(2);
+            myChart1.setOption(option1, true);
+        }, 2000);
+        // 使用刚指定的配置项和数据显示图表。
+        myChart1.setOption(option1);
+
+        
+    </script>
+</body>
+</html>
